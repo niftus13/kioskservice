@@ -41,7 +41,7 @@ public class Product {
     private Long pno;
 
     @NotNull
-    private String product_name;
+    private String pname;
 
     @NotNull
     private int price;
@@ -86,8 +86,8 @@ public class Product {
         this.price = price;
     }
 
-    public void changeproduct_name(String product_name){
-        this.product_name = product_name;
+    public void changepname(String pname){
+        this.pname = pname;
     }
 
     public void changeSold(boolean soldout){

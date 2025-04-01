@@ -49,7 +49,7 @@ public class ProductServiceImpl implements ProductService{
         log.info("register");
         
         Product product = Product.builder()
-            .product_name(productDTO.getProduct_name())
+            .pname(productDTO.getPname())
             .price(productDTO.getPrice())
             .category(productDTO.getCategory())
             .inventory(productDTO.getInventory())
@@ -85,7 +85,7 @@ public class ProductServiceImpl implements ProductService{
 
         Product product = result.orElseThrow();
 
-        product.changeproduct_name(productDTO.getProduct_name());
+        product.changepname(productDTO.getPname());
         product.changePrice(productDTO.getPrice());
         product.changeSold(productDTO.isSoldout());
         product.ChangeCategory(productDTO.getCategory());

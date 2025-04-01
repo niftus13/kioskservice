@@ -35,7 +35,7 @@ public class ProductRepTest {
         for(int i=1; i<=100; i++){
 
             Product product = Product.builder()
-                .product_name("Product.."+i)
+                .pname("Product.."+i)
                 .price(i*100)
                 .pdesc("Product.."+i+"번")
                 .inventory(Long.valueOf(i))

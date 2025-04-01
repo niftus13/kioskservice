@@ -19,7 +19,7 @@ import lombok.NoArgsConstructor;
 public class ProductDTO {
     
     private Long pno;
-    private String product_name;
+    private String pname;
     private int price;
     private String desc;
     private Long inventory;

@@ -9,7 +9,7 @@ public class ProductListDTO {
 
     private Long pno;
 
-    private String product_name;
+    private String pname;
 
     private String pdesc;
 

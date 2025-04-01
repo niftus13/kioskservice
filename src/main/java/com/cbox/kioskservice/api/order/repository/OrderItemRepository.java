@@ -16,7 +16,7 @@ public interface OrderItemRepository extends JpaRepository<OrderItem, Long>{
 
     @Query(
         "select"+
-        " new com.cbox.kioskservice.api.order.dto.OrderItemListDTO(oi.oino, oi.qty, p.pno, p.product_name, p.price, pi.pfname, o.regDate)"+
+        " new com.cbox.kioskservice.api.order.dto.OrderItemListDTO(oi.oino, oi.qty, p.pno, p.pname, p.price, pi.pfname, o.regDate)"+
         " from"+
         " OrderItem oi inner join Order o on oi.order = o"+
         " left join Product p on oi.product = p"+
@@ -47,7 +47,7 @@ public interface OrderItemRepository extends JpaRepository<OrderItem, Long>{
     
     @Query(
         "select new com.cbox.kioskservice.api.order.dto.OrderItemListDTO(" +
-        "oi.oino, oi.qty, p.pno, p.product_name, p.price, pi.pfname, o.regDate) " +
+        "oi.oino, oi.qty, p.pno, p.pname, p.price, pi.pfname, o.regDate) " +
         "from OrderItem oi " +
         "inner join Order o on oi.order = o " +
         "left join Product p on oi.product = p " +

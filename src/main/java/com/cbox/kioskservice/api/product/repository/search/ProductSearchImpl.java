@@ -49,7 +49,7 @@ public class ProductSearchImpl extends QuerydslRepositorySupport implements Prod
             query.select(
                 Projections.bean(ProductListDTO.class, 
                 product.pno,
-                product.product_name,
+                product.pname,
                 product.inventory,
                 product.price,
                 product.pdesc,
@@ -91,7 +91,7 @@ public class ProductSearchImpl extends QuerydslRepositorySupport implements Prod
             for(String type : searchArr){
 
                 switch(type){
-                    case "b" -> searchBuilder.or(product.product_name.contains(keyword));
+                    case "b" -> searchBuilder.or(product.pname.contains(keyword));
                     case "c" -> searchBuilder.or(product.pdesc.contains(keyword));
                 }
 
@@ -108,7 +108,7 @@ public class ProductSearchImpl extends QuerydslRepositorySupport implements Prod
                 query.select(
                         Projections.bean(ProductListDTO.class,
                                 product.pno,
-                                product.product_name,
+                                product.pname,
                                 product.price,
                                 product.inventory,
                                 product.category,
@@ -152,7 +152,7 @@ public class ProductSearchImpl extends QuerydslRepositorySupport implements Prod
             for(String type : searchArr){
 
                 switch(type){
-                    case "b" -> searchBuilder.or(product.product_name.contains(keyword));
+                    case "b" -> searchBuilder.or(product.pname.contains(keyword));
                     case "c" -> searchBuilder.or(product.pdesc.contains(keyword));
                 }
 
@@ -169,7 +169,7 @@ public class ProductSearchImpl extends QuerydslRepositorySupport implements Prod
                 query.select(
                         Projections.bean(ProductListDTO.class,
                                 product.pno,
-                                product.product_name,
+                                product.pname,
                                 product.inventory,
                                 product.price,
                                 productImage.pfname.min().as("pfname"),

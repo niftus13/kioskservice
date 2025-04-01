@@ -74,7 +74,7 @@ public class ProductController {
     @PostMapping("modify")
     public Map<String, Long> modify(ProductDTO productDTO){
 
-        log.info("modify....." + productDTO.getPno() + " "+productDTO.getProduct_name());
+        log.info("modify....." + productDTO.getPno() + " "+productDTO.getPname());
 
         log.info(productDTO);
 
