@@ -3,7 +3,7 @@ package com.cbox.kioskservice.api.common.util;
 
 import lombok.extern.log4j.Log4j2;
 
-
+import java.nio.charset.StandardCharsets;
 import java.time.ZonedDateTime;
 import java.util.*;
 
@@ -21,53 +21,47 @@ import io.jsonwebtoken.security.Keys;
 public class JWTUtil {
 
 
-    private static String key = "1234567890123456789012345678901234567890";
+     private static final String SECRET_KEY = "1234567890123456789012345678901234567890";
+    private static final SecretKey KEY = Keys.hmacShaKeyFor(SECRET_KEY.getBytes(StandardCharsets.UTF_8));
 
     public static String generateToken(Map<String, Object> valueMap, int min) {
-
-        SecretKey key = null;
-
-        try{
-            key = Keys.hmacShaKeyFor(JWTUtil.key.getBytes("UTF-8"));
-        }catch(Exception e){
-            throw new RuntimeException(e.getMessage());
+        try {
+            return Jwts.builder()
+                    .setHeader(Map.of("typ", "JWT"))
+                    .setClaims(valueMap)
+                    .setIssuedAt(Date.from(ZonedDateTime.now().toInstant()))
+                    .setExpiration(Date.from(ZonedDateTime.now().plusMinutes(min).toInstant()))
+                    .signWith(KEY)
+                    .compact();
+        } catch (Exception e) {
+            log.error("Error generating JWT token", e);
+            throw new RuntimeException("JWT Generation Error");
         }
-
-        String jwtStr = Jwts.builder()
-                .setHeader(Map.of("typ","JWT"))
-                .setClaims(valueMap)
-                .setIssuedAt(Date.from(ZonedDateTime.now().toInstant()))
-                .setExpiration(Date.from(ZonedDateTime.now().plusMinutes(min).toInstant()))
-                .signWith(key)
-                .compact();
-
-        return jwtStr;
     }
 
     public static Map<String, Object> validateToken(String token) {
-
-        Map<String, Object> claim = null;
-        try{
-
-            SecretKey key = Keys.hmacShaKeyFor(JWTUtil.key.getBytes("UTF-8"));
-
-            claim = Jwts.parserBuilder()
-                    .setSigningKey(key)
+        try {
+            return Jwts.parserBuilder()
+                    .setSigningKey(KEY)
                     .build()
-                    .parseClaimsJws(token) // 파싱 및 검증, 실패 시 에러
+                    .parseClaimsJws(token) // 파싱 및 검증
                     .getBody();
-        }catch(MalformedJwtException malformedJwtException){
-            throw new CustomJWTException("MalFormed");
-        }catch(ExpiredJwtException expiredJwtException){
+        } catch (ExpiredJwtException e) {
+            log.error("JWT Expired", e);
             throw new CustomJWTException("Expired");
-        }catch(InvalidClaimException invalidClaimException){
+        } catch (MalformedJwtException e) {
+            log.error("JWT Malformed", e);
+            throw new CustomJWTException("MalFormed");
+        } catch (InvalidClaimException e) {
+            log.error("JWT Invalid Claims", e);
             throw new CustomJWTException("Invalid");
-        }catch(JwtException jwtException){
+        } catch (JwtException e) {
+            log.error("JWT Error", e);
             throw new CustomJWTException("JWTError");
-        }catch(Exception e){
+        } catch (Exception e) {
+            log.error("Unknown JWT Error", e);
             throw new CustomJWTException("Error");
         }
-        return claim;
     }
 
 }
