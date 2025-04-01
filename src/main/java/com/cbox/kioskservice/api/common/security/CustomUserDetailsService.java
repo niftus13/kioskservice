@@ -44,7 +44,7 @@ public class CustomUserDetailsService implements UserDetailsService{
         MemberDTO memberDTO = new MemberDTO(
             member.getId(),
             member.getPw(),
-            member.isSosial(),
+            member.isSocial(),
             member.isMdelFlag(),
             member.getMemberRoleList().stream().map(memberRole -> memberRole.name()).collect(Collectors.toList()));
         log.info(memberDTO);

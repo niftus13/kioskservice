@@ -1,14 +1,20 @@
 package com.cbox.kioskservice.api.common.file;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import jakarta.annotation.PostConstruct;
 import lombok.extern.log4j.Log4j2;
 import net.coobird.thumbnailator.Thumbnailator;
 
 import java.io.*;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -23,11 +29,20 @@ public class FileUploader {
         }
     }
 
-
-
     @Value("${com.kiosk.upload.path}")
     private String path;
 
+    @PostConstruct
+    public void init(){
+        File tempFolder = new File(path);
+        if(tempFolder.exists() == false){
+            tempFolder.mkdir();
+        }
+        path = tempFolder.getAbsolutePath();
+        log.info("path : "+ path);
+        log.info("--------------------");
+    }
+    
 
     public List<String> uploadFiles(List<MultipartFile> files, boolean makeThumbnail){
 
@@ -36,8 +51,6 @@ public class FileUploader {
         }
 
         List<String> uploadFileName = new ArrayList<>();
-        log.info("path : "+path);
-        log.info(files);
 
         for(MultipartFile mfile : files){
 
@@ -70,6 +83,24 @@ public class FileUploader {
 
         return uploadFileName;
 
+    }
+
+     // Get방식 파일이름 호출, 헤더 메시지
+     public ResponseEntity<Resource> getFile(String fileName){
+        Resource resource = new FileSystemResource(path+ File.separator + fileName);
+
+        if(!resource.isReadable()){
+            resource = new FileSystemResource(path+File.separator+"default.jpeg");
+        }
+
+        HttpHeaders headers = new HttpHeaders();
+
+        try {
+            headers.add("Content-Type", Files.probeContentType(resource.getFile().toPath()));
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().build();
+        }
+        return ResponseEntity.ok().headers(headers).body(resource);
     }
 
     public void removeFiles(List<String> fileNames){

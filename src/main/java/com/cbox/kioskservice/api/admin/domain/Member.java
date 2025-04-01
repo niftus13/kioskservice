@@ -26,7 +26,6 @@ public class Member {
     
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
 
     @Column(nullable = false)
@@ -35,7 +34,7 @@ public class Member {
     @Column(nullable = false, unique = true)
     private String pw;
 
-    private boolean sosial;
+    private boolean social;
 
     private boolean mdelFlag;
 
@@ -57,7 +56,7 @@ public class Member {
     }
 
     public void changeSocial(boolean social){
-        this.sosial = social;
+        this.social = social;
     }
 
     public void changemdelFlag(boolean mdelFlag){

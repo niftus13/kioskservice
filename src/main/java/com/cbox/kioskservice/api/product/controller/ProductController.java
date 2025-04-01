@@ -3,6 +3,8 @@ package com.cbox.kioskservice.api.product.controller;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.core.io.Resource;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.cbox.kioskservice.api.common.file.FileUploader;
 import com.cbox.kioskservice.api.common.pageDTO.PageRequestDTO;
@@ -21,8 +24,8 @@ import com.cbox.kioskservice.api.product.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
+
 @RestController
-@CrossOrigin
 @RequestMapping("/api/product/")
 @RequiredArgsConstructor
 @Log4j2
@@ -47,6 +50,12 @@ public class ProductController {
         return productService.readOne(pno);
     }
 
+    @GetMapping("/view/{fileName}")
+    public ResponseEntity<Resource> viewFileGET(@PathVariable String fileName) {
+        return  fileUploader.getFile(fileName);
+    }
+    
+
     @PostMapping("")
     public Map<String,Long> register(ProductDTO productDTO){
         log.info(productDTO);
@@ -57,6 +66,7 @@ public class ProductController {
         Long pno = productService.register(productDTO);
 
         return Map.of("result",pno);
+
     }
 
 

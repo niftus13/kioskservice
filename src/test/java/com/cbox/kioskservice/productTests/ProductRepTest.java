@@ -32,7 +32,7 @@ public class ProductRepTest {
 
         ProductCategory[] categories = ProductCategory.values();
 
-        for(int i=1; i<=100; i++){
+        for(int i=1; i<=20; i++){
 
             Product product = Product.builder()
                 .pname("Product.."+i)

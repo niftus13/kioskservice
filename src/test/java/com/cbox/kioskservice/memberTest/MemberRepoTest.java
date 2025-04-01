@@ -29,6 +29,7 @@ public class MemberRepoTest {
             Member member = Member.builder()
                 .id("user"+i+"@aaa.com")
                 .pw(passwordEncoder.encode("1111"))
+                .name("user"+i)
                 .build();
             member.addRole(MemberRole.ADMIN);
 
@@ -53,6 +54,8 @@ public class MemberRepoTest {
         log.info("___________________");
         log.info(member);
     }
+
+    
 
 
 }

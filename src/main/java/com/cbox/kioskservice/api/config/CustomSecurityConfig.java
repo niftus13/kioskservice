@@ -38,13 +38,18 @@ public class CustomSecurityConfig {
 
         log.info("-------------Security config--------------------");
 
+        // CORS 설정
         http.cors(config -> config.configurationSource(corsConfigurationSource()));
+        
         http.csrf(config -> config.disable());
 
+        // 로그인 설정
         http.formLogin(config -> {
             config.loginPage("/api/member/login");
             config.successHandler(new ApiLoginSuccessHandler());
         });
+
+        //예외설정
         http.exceptionHandling(config -> {
             config.accessDeniedHandler(new CustomAccessDeniedHandler());
         });
@@ -63,7 +68,7 @@ public class CustomSecurityConfig {
         CorsConfiguration configuration = new CorsConfiguration();
 
         configuration.setAllowedOriginPatterns(Arrays.asList("*"));
-        configuration.setAllowedMethods(Arrays.asList("HEAD", "GET", "POST", "PUT", "DELETE"));
+        configuration.setAllowedMethods(Arrays.asList("HEAD", "GET", "POST", "PUT", "DELETE","OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type"));
         configuration.setAllowCredentials(true);
 
